@@ -23,4 +23,3 @@ export class OperationFactory  {
     return new this.operationMap[slug](event);
   }
 }
-

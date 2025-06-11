@@ -6,24 +6,34 @@ description: "A snap-in to link knowledge base articles to incidents."
 service_account:
   display_name: Article Incident Linker Bot
 
-event_sources:
-  organization:
-    - name: incident-events
-      description: Listens for incident creation and updates
-      display_name: DevRev Incident Events
-      type: devrev-webhook
-      config:
-        event_types:
-          - incident_created
-
 functions:
   - name: link_article_to_incident
-    description: Links relevant articles to incidents
+    description: Link relevant article to an incident
 
-automations:
-  - name: article-incident-automation
-    description: Automatically links newly created incidents to related articles
-    source: incident-events
-    event_types:
-      - incident_created
+operations:
+  - name: link_articles_to_incident
+    display_name: Link Article to Incident
+    description: Operation to link the most relevant article to a specific incident.
+    slug: link_articles_to_incident
     function: link_article_to_incident
+    type: action
+    inputs:
+      fields:
+        - name: incident_id
+          description: ID of the incident
+          field_type: text
+          is_required: true
+          ui:
+            display_name: Incident ID
+        - name: article_id
+          description: ID of the article
+          field_type: text
+          is_required: true
+          ui:
+            display_name: Article ID
+    outputs:
+      fields:
+        - name: message
+          field_type: text
+          ui:
+            display_name: Confirmation Message
